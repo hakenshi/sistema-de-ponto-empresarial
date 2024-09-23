@@ -6,6 +6,7 @@ use App\Http\Controllers\TurnosController;
 use App\Http\Controllers\TurnosUsuariosController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\UserMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,14 +34,15 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('/', [TurnosController::class, 'destroy']);
             Route::patch('/', [TurnosController::class, 'update']);
         });
-
     });
 
-    Route::prefix('/pontos')->group(function () {
-        Route::post('/bater-ponto', [PontosController::class, 'store']);
+    Route::middleware(UserMiddleware::class)->group(function () {
+        Route::prefix('/pontos')->group(function () {
+            Route::post('/bater-ponto', [PontosController::class, 'store']);
+        });
     });
 
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 });
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('api.login');

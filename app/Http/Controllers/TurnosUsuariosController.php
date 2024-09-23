@@ -45,7 +45,6 @@ class TurnosUsuariosController extends Controller
             }
         }
 
-
         $user->turnos()->attach($data['id_turno']);
 
         return new UserResource($user);
@@ -70,8 +69,9 @@ class TurnosUsuariosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TurnosUsuarios $turnosUsuarios)
+    public function destroy(User $turnosUsuarios)
     {
-        //
+        $turnosUsuarios->turnos()->detach();
+        return new UserResource($turnosUsuarios);
     }
 }

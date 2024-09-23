@@ -22,14 +22,8 @@ class PontoResource extends JsonResource
               'email' => $this->usuario->email,
               'matricula' => $this->usuario->matricula,
           ],
-            'data_hora_entrada' => [
-                'data' => Carbon::createFromFormat('Y-m-d H:i:s', $this->data_hora_entrada)->format('d/m/Y'),
-                'hora' => Carbon::createFromFormat('Y-m-d H:i:s', $this->data_hora_entrada)->format('H:i:s'),
-            ],
-            'data_hora_saida' => $this->data_hora_saida ? [
-                'data' => Carbon::createFromFormat('Y-m-d H:i:s', $this->data_hora_saida)->format('d/m/Y'),
-                'hora' => Carbon::createFromFormat('Y-m-d H:i:s', $this->data_hora_saida)->format('H:i:s'),
-            ] : null,
+            'data_hora_entrada' => Carbon::createFromFormat('Y-m-d H:i:s', $this->data_hora_entrada)->format('d/m/Y, H:i'),
+            'data_hora_saida' => $this->data_hora_saida ?  Carbon::createFromFormat('Y-m-d H:i:s', $this->data_hora_saida)->format('d/m/Y, H:i') : null,
         ];
     }
 }

@@ -1,0 +1,130 @@
+@import "colors.css";
+body {
+    display: grid;
+    grid-template-rows: .12fr 1fr;
+    grid-template-columns: 12rem auto;
+    grid-template-areas:
+    "aside header"
+    "aside main";
+    height: 100vh;
+    background-color: rgba(38, 38, 38, .12) !important;
+    padding: 15px;
+    gap: 15px;
+}
+
+header{
+    grid-area: header;
+    border-radius: 20px;
+    height: 100%;
+    background: var(--unifae-green-1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: var(--container-shadow) ;
+}
+
+aside{
+    grid-area: aside;
+    box-shadow: var(--container-shadow) ;
+}
+
+.logo{
+    width: 9.5rem;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.items-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    height: 50%;
+    width: 100%;
+}
+
+.items-container > a{
+    padding: 10px;
+}
+
+.items-container > a > p{
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: .8rem;
+}
+
+main{
+    grid-area: main;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: var(--container-shadow) ;
+}
+
+.clock-container{
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+    gap: 20px;
+}
+
+.clock-container #clock, .clock-container h2, .clock-container p{
+    font-size: 2rem !important;
+    font-weight: bold !important;
+}
+
+.link-container{
+    display: grid;
+    gap: 20px;
+}
+
+.link-item{
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+}
+.link-item:hover{
+    background-color: var(--unifae-gray-2) !important;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 768px) {
+
+    body{
+        grid-template-rows: auto 1fr 100px;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+        "header"
+        "main"
+        "aside";
+        gap: 0;
+        padding: 0;
+    }
+    aside, main, header{
+        border-radius: 0;
+    }
+    .items-container .logo, .items-container p{
+    display: none;
+    }
+    .link-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+    .link-item{
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+
+    }
+
+}

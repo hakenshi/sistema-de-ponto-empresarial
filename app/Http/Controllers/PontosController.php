@@ -15,7 +15,7 @@ class PontosController extends Controller
      */
     public function index()
     {
-        return Pontos::all();
+        return new PontoResource(Pontos::with('usuario')->get());
     }
 
     /**
@@ -27,7 +27,6 @@ class PontosController extends Controller
             $user = $request->user();
             $turnos = $user->turnos;
             $turnoAtual = null;
-
             foreach ($turnos as $turno) {
                 $inicioTurno = Carbon::parse($turno->hora_entrada);
                 $fimTurno = Carbon::parse($turno->hora_saida);
@@ -44,15 +43,14 @@ class PontosController extends Controller
 
             $pontoEntrada = Pontos::where('id_usuario', $user->id)
                 ->where('id_turno', $turnoAtual->id)
-                ->whereNotNull('data_hora_entrada')
                 ->whereNull('data_hora_saida')
                 ->first();
 
             $pontoExistente = Pontos::where('id_usuario', $user->id)
                 ->where('id_turno', $turnoAtual->id)
-                ->whereNotNull('data_hora_entrada')
-                ->whereNotNull('data_hora_saida')
-                ->exists();
+                ->where('data_hora_entrada', "<=", now())
+                ->where('data_hora_saida', "<=", now())
+                ->first();
 
             if ($pontoExistente) {
                 return response()->json([
@@ -84,7 +82,7 @@ class PontosController extends Controller
      */
     public function show(Pontos $pontos)
     {
-        //
+        return new PontoResource($pontos->with('usuario')->get());
     }
 
     /**
@@ -92,7 +90,11 @@ class PontosController extends Controller
      */
     public function update(Request $request, Pontos $pontos)
     {
-        //
+        $data = $request->all();
+
+        $pontos->update($data);
+
+        return new PontoResource($pontos);
     }
 
     /**
@@ -100,6 +102,7 @@ class PontosController extends Controller
      */
     public function destroy(Pontos $pontos)
     {
-        //
+        $pontos->delete();
+        return new PontoResource($pontos->with('usuario')->get());
     }
 }

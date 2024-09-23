@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -17,22 +16,29 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($data)) {
-            return response()->json([
-                'user' => Auth::user(),
-                'token' => $request->user()->createToken('auth_token')->plainTextToken
-            ], 200);
+            if (!$request->hasSession()) {
+                $request->setLaravelSession(Session::driver());
+            }
+
+            $request->session()->regenerate();
+            if (Auth::user()->id_cargo === 1) {
+                return redirect()->intended('dashboard');
+            } else {
+                return redirect()->intended('home');
+            }
         }
         return response()->json([
             'message' => 'Email ou senha incorreta'
         ], 403);
-
     }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        if (Auth::check()) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
-        return response('', 204);
+        return redirect()->route('login');
     }
-
 }

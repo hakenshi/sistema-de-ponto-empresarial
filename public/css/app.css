@@ -1,0 +1,64 @@
+@import "colors.css";
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.input{
+    width: 100%;
+    border: 1px solid var(--unifae-green-3);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 7px;
+    i{
+        color: var(--unifae-green-3);
+    }
+    input{
+        width: 100%;
+        border: none;
+        padding: 5px;
+        font-size: 16px;
+        &:focus{
+            outline: none;
+        }
+    }
+}
+a{
+    text-decoration: none !important;
+}
+button{
+    border: none;
+    padding: 10px;
+    border-radius: 5px !important;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+aside{
+    background: var(--unifae-gray-1);
+    border-radius: 20px;
+}
+
+.button-primary{
+    background: var(--unifae-green-4);
+    color: white;
+    transition: all .2s ease-in-out;
+    &:hover{
+        background: var(--unifae-green-1);
+    }
+    &:disabled{
+        background: var(--unifae-green-2);
+    }
+}
+
+.avatar{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
