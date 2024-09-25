@@ -1,7 +1,8 @@
 @import "colors.css";
+
 body {
     display: grid;
-    grid-template-rows: .12fr 1fr;
+    grid-template-rows: .12fr auto;
     grid-template-columns: 12rem auto;
     grid-template-areas:
     "aside header"
@@ -12,29 +13,29 @@ body {
     gap: 15px;
 }
 
-header{
+header {
     grid-area: header;
     border-radius: 20px;
-    height: 100%;
+    height: 72px;
     background: var(--unifae-green-1);
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    box-shadow: var(--container-shadow) ;
+    box-shadow: var(--container-shadow);
 }
 
-aside{
+aside {
     grid-area: aside;
-    box-shadow: var(--container-shadow) ;
+    box-shadow: var(--container-shadow);
 }
 
-.logo{
+.logo {
     width: 9.5rem;
     padding: 10px;
     margin-top: 10px;
 }
 
-.items-container{
+.items-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,26 +44,27 @@ aside{
     width: 100%;
 }
 
-.items-container > a{
+.items-container > a {
     padding: 10px;
 }
 
-.items-container > a > p{
+.items-container > a > p {
     text-align: center;
     color: white;
     font-weight: bold;
     font-size: .8rem;
 }
 
-main{
+main {
     grid-area: main;
     background: white;
     border-radius: 20px;
     padding: 20px;
-    box-shadow: var(--container-shadow) ;
+    box-shadow: var(--container-shadow);
+    max-width: 100vw;
 }
 
-.clock-container{
+.clock-container {
     text-align: center;
     font-weight: bold;
     display: flex;
@@ -73,17 +75,22 @@ main{
     gap: 20px;
 }
 
-.clock-container #clock, .clock-container h2, .clock-container p{
+.clock-container #clock, .clock-container h2, .clock-container p, .turno-container {
     font-size: 2rem !important;
     font-weight: bold !important;
 }
 
-.link-container{
+#ultimo-ponto {
+    display: flex;
+    flex-direction: column;
+}
+
+.link-container {
     display: grid;
     gap: 20px;
 }
 
-.link-item{
+.link-item {
     color: white;
     text-decoration: none;
     display: flex;
@@ -91,14 +98,97 @@ main{
     gap: 20px;
     padding: 10px;
 }
-.link-item:hover{
+
+.link-item:hover {
     background-color: var(--unifae-gray-2) !important;
     border-radius: 10px;
 }
 
+.table-container {
+    height: 100%;
+    border: 1px solid var(--unifae-green-3);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    /*gap: 10px;*/
+}
+
+.table-container > table {
+    width: 100%;
+}
+
+.table-container table > thead > tr > th {
+    padding: 10px !important;
+}
+
+.table-container table {
+
+    width: 100%;
+    /*border-collapse: collapse;*/
+
+    tbody{
+        /*display: table-cell;*/
+        tr{
+            border-top: 1px solid rgba(0, 0, 0, 0.25) !important;
+        }
+        tr:first-child{
+            border-top: none;
+        }
+        td{
+            padding: 10px !important;
+        }
+
+    }
+}
+
+.table-dark{
+    background-color: var(--unifae-green-1) !important;
+}
+
+.actions-container{
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+select{
+    background-color: white !important;
+    border-radius: 7px;
+    padding: 5px;
+    border: 1px solid var(--unifae-green-3);
+}
+
+.pagination-container{
+    display: flex;
+    gap: 10px;
+}
+
+.button-paginate,.button-paginate-disabled{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 100% !important;
+}
+
+.button-paginate-disabled{
+    background: var(--unifae-gray-1);
+}
+
+.button-paginate{
+    background: var(--unifae-green-1);
+}
+
 @media screen and (max-width: 768px) {
 
-    body{
+    body {
         grid-template-rows: auto 1fr 100px;
         grid-template-columns: 1fr;
         grid-template-areas:
@@ -108,23 +198,43 @@ main{
         gap: 0;
         padding: 0;
     }
-    aside, main, header{
+    .actions-container{
+        gap: 5px;
+    }
+    aside, main, header {
         border-radius: 0;
     }
-    .items-container .logo, .items-container p{
-    display: none;
+
+    .clock-container {
+        height: 75%;
     }
-    .link-container{
+
+    .logo, .items-container p {
+        display: none;
+    }
+
+    .items-container{
+        height: auto;
+    }
+
+    .link-container {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100%;
     }
-    .link-item{
+
+    .link-item {
         display: flex;
         flex-direction: column;
         gap: 0;
 
     }
 
+    .table-container > table {
+
+        max-height: 60vh;
+        overflow-y: scroll;
+        display: block;
+
+    }
 }

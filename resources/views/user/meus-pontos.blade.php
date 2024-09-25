@@ -1,3 +1,3 @@
-<x-default_layout>
-    <h1>xd</h1>
+<x-default_layout :css="asset('css/admin-style.css')">
+    <livewire:pontos-table/>
 </x-default_layout>

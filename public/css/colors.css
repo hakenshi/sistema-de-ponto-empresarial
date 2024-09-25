@@ -1,6 +1,6 @@
 :root {
     --unifae-green-1: #38A69B;
-    --unifae-green-2: rgba(50, 115, 108, 0.62);
+    --unifae-green-2: #32736C;
     --unifae-green-3: #25403D;
     --unifae-green-4: #3BBFA7;
     --unifae-green-5: #E5F4F3;
@@ -13,6 +13,7 @@
     --unifae-gray50-1: #58585980;
     --unifae-gray50-2: #73737380;
     --unifae-gray50-3: #40404080;
-    --card-white-1: rgb(234, 234, 234);
+    --card-white-1: #EAEAEA;
     --container-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
 }
+

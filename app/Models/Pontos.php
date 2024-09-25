@@ -10,6 +10,7 @@ class Pontos extends Model
 {
     use HasFactory;
 
+    protected $perPage = 10;
     protected $fillable = [
         'id_usuario',
         'id_turno',
@@ -22,6 +23,11 @@ class Pontos extends Model
     public function usuario(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_usuario');
+    }
+
+    public function turnos(): BelongsTo
+    {
+        return $this->belongsTo(Turnos::class, 'id_turno');
     }
 
 }

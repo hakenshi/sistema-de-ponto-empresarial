@@ -15,7 +15,7 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->id_cargo === 2) {
+        if ($request->user()->id_cargo == 2) {
             return $next($request);
         }
         abort(403);
