@@ -42,7 +42,6 @@ ponto.addEventListener('click', () => {
         alert(`Por favor aguarde ${remainingMinutes} minutos antes de bater outro ponto`)
         return
     }
-
     fetch('/api/pontos/bater-ponto', {
         method: 'POST',
         headers: {

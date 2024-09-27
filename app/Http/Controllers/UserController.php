@@ -7,7 +7,9 @@ use App\Http\Requests\UpdateUsuariosRequest;
 use App\Http\Requests\UsuariosRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -54,10 +56,26 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        if (isset($data['password'])) $data['password'] = Hash::make($request->password);
+        if (isset($data['password'])){
+            $data['password'] = Hash::make($request->password);
+        }
+        else{
+            $data['password'] = $user->password;
+        }
 
-        $user->update($data);
-        return new UserResource($user);
+        if ($request->hasFile('foto_perfil') && $request->file('foto_perfil')->isValid()) {
+            if (!(is_null($user->foto_perfil))) {
+                Storage::disk('public')->delete($user->foto_perfil);
+            }
+            $data['foto_perfil'] = $request->file('foto_perfil')->store('images', 'public');
+        }
+
+        $user->foto_perfil = $data['foto_perfil'];
+        $user->password = $data['password'];
+
+        $user->save();
+
+        return back()->with('success', 'Dados atualizados com sucesso!');
     }
 
     /**

@@ -13,7 +13,7 @@
         <div class="turno-container">
             <p>
                 Turno Atual:
-                @if($proximoTurno)
+                @if($proximoTurno['hora_entrada'] || $proximoTurno['hora_saida'])
                     {{$proximoTurno['hora_entrada']}} - {{ $proximoTurno['hora_saida']}}
                 @else
                     Sem Turnos

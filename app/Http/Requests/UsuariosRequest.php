@@ -11,12 +11,9 @@ class UsuariosRequest extends FormRequest
      * Determine if the user is authorized to make this request.
      */
 
-    public function authorize(Request $request): bool
+    public function authorize(): bool
     {
-        if ($request->user()->id_cargo == 1){
         return true;
-        }
-        return false;
     }
 
     /**
@@ -31,12 +28,15 @@ class UsuariosRequest extends FormRequest
                 'nome' => 'nullable',
                 'email' => 'nullable|email|unique:users,email',
                 'password' => 'nullable|min:3',
+                'confirm_password' => 'nullable|min:3|same:password',
+                'foto_perfil' => 'nullable|image',
             ];
         }
         return [
             'nome' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:3',
+            'foto_perfil' => 'nullable',
         ];
     }
 }

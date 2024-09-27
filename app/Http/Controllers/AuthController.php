@@ -37,8 +37,12 @@ class AuthController extends Controller
         if (Auth::check()) {
             $request->session()->invalidate();
             $request->session()->regenerateToken();
+            return response()->json([
+                'status' => 'success'
+            ], 201);
         }
-
-        return redirect()->route('login');
+        return response()->json([
+            'status' => 'error'
+        ]);
     }
 }

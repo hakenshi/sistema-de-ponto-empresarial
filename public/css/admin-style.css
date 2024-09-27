@@ -168,7 +168,7 @@ select{
     gap: 10px;
 }
 
-.button-paginate,.button-paginate-disabled{
+.button-icon,.button-paginate,.button-paginate-disabled{
     color: white;
     display: flex;
     justify-content: center;
@@ -185,6 +185,80 @@ select{
 .button-paginate{
     background: var(--unifae-green-1);
 }
+.button-icon{
+    background: #f63a3a;
+}
+
+.button-icon:hover{
+    background: red;
+}
+
+.dropdown{
+    position: relative;
+}
+
+.dropdown-content > button{
+    background: none;
+    color: white;
+}
+
+.dropdown-content{
+    position: absolute;
+    background: var(--unifae-gray-2);
+    right: 0;
+    width: 150px;
+    border-radius: 5px;
+}
+
+.dialog-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.dialog-header{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dialog-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100% !important;
+}
+
+.dialog-form{
+    width: 100% !important;
+}
+
+.image-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.avatar{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.avatar-lg{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 5px solid var(--unifae-green-4);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
 
 @media screen and (max-width: 768px) {
 

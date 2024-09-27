@@ -15,11 +15,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-
     Route::middleware(AdminMiddleware::class)->group(function () {
-        Route::apiResources([
-            '/users' => UserController::class,
-        ]);
+        Route::prefix('/users')->group(function () {
+            Route::put('/{user}', [UserController::class, 'update']);
+            Route::get('/', [UserController::class, 'index']);
+            Route::post('/', [UserController::class, 'store']);
+            Route::delete('/{user}', [UserController::class, 'destroy']);
+        });
+
         Route::prefix('pontos')->group(function () {
             Route::delete('/', [PontosController::class, 'store']);
             Route::patch('/', [PontosController::class, 'update']);
@@ -37,6 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware(UserMiddleware::class)->group(function () {
+        Route::prefix('/users')->group(function () {
+            Route::put('/{user}', [UserController::class, 'update']);
+        });
         Route::prefix('/pontos')->group(function () {
             Route::post('/bater-ponto', [PontosController::class, 'store']);
         });
