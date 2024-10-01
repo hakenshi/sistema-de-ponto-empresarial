@@ -27,18 +27,22 @@ class UserController extends Controller
      */
     public function store(UsuariosRequest $request)
     {
+
         $data = $request->validated();
 
         $data['password'] = Hash::make($data['password']);
+
+        $data['id_curso'] = intval($data['curso']);
+
+        if ($data['id_curso']) {
+            unset($data['curso']);
+        }
+
         $data['id_cargo'] = 2;
 
-        $matricula_inicio = mt_rand(10000, 99999);
-        $matricula_fim = mt_rand(0, 9);
-        $data['matricula'] = "$matricula_inicio-$matricula_fim";
+        User::create($data);
 
-        $user = User::create($data);
-
-        return new UserResource($user);
+        return back();
     }
 
     /**
@@ -54,12 +58,14 @@ class UserController extends Controller
      */
     public function update(UsuariosRequest $request, User $user)
     {
+
         $data = $request->validated();
 
-        if (isset($data['password'])){
+        dd($data);
+
+        if (isset($data['password'])) {
             $data['password'] = Hash::make($request->password);
-        }
-        else{
+        } else {
             $data['password'] = $user->password;
         }
 

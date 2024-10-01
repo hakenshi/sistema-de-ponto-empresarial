@@ -26,16 +26,20 @@ class UsuariosRequest extends FormRequest
         if ($this->method() == 'PATCH' || $this->method() == 'PUT') {
             return [
                 'nome' => 'nullable',
-                'email' => 'nullable|email|unique:users,email',
+                'curso' => 'nullable',
+                'email' => 'nullable|email',
                 'password' => 'nullable|min:3',
-                'confirm_password' => 'nullable|min:3|same:password',
+                'confirm-password' => 'nullable|min:3|same:password',
                 'foto_perfil' => 'nullable|image',
             ];
         }
         return [
             'nome' => 'required',
+            'curso' => 'required|exists:cursos,id',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:3',
+            'confirm-password' => 'required|min:3|same:password',
+            'matricula' => 'required|max:10',
             'foto_perfil' => 'nullable',
         ];
     }

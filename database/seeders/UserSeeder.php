@@ -16,12 +16,14 @@ class UserSeeder extends Seeder
     {
         User::factory()->create([
             'id_cargo' => 1,
+            'id_curso' => 1,
             'nome' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin'),
         ]);
         User::factory()->create([
             'id_cargo' => 2,
+            'id_curso' => 1,
             'nome' => 'felipe',
             'email' => 'felipe@email.com',
             'password' => Hash::make('123'),

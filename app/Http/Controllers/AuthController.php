@@ -27,7 +27,7 @@ class AuthController extends Controller
                 return redirect()->intended('home');
             }
         }
-        return response()->json([
+        return back()->withErrors([
             'message' => 'Email ou senha incorreta'
         ], 403);
     }

@@ -18,7 +18,7 @@ class CargosSeeder extends Seeder
         ]);
 
         Cargos::factory()->create([
-            'nome' => 'funcionario'
+            'nome' => 'embaixador'
         ]);
     }
 }

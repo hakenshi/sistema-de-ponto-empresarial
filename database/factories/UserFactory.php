@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Cargos;
+use App\Models\Cursos;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -18,6 +19,7 @@ class UserFactory extends Factory
     {
         return [
             'id_cargo' => 2,
+            'id_curso' => Cursos::all()->random()->id,
             'nome' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('123'),

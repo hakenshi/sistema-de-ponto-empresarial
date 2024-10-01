@@ -2,7 +2,7 @@
 
 body {
     display: grid;
-    grid-template-rows: .12fr auto;
+    grid-template-rows: 0fr auto;
     grid-template-columns: 12rem auto;
     grid-template-areas:
     "aside header"
@@ -106,18 +106,18 @@ main {
 
 .table-container {
     height: 100%;
-    border: 1px solid var(--unifae-green-3);
     padding: 10px;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: 1fr;
+    gap: 10px;
     align-items: center;
-    /*gap: 10px;*/
 }
 
 .table-container > table {
     width: 100%;
+    grid-row: 2;
 }
 
 .table-container table > thead > tr > th {
@@ -149,6 +149,7 @@ main {
 }
 
 .actions-container{
+    grid-row: 1;
     width: 100%;
     padding: 10px;
     display: flex;
@@ -166,6 +167,7 @@ select{
 .pagination-container{
     display: flex;
     gap: 10px;
+    grid-row: 3;
 }
 
 .button-icon,.button-paginate,.button-paginate-disabled{
@@ -232,6 +234,8 @@ select{
 }
 
 .dialog-form{
+    display: grid;
+    gap: .5em;
     width: 100% !important;
 }
 
@@ -305,7 +309,6 @@ select{
     }
 
     .table-container > table {
-
         max-height: 60vh;
         overflow-y: scroll;
         display: block;

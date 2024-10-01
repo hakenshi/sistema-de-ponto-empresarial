@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 <div class="table-container">
     <livewire:filter-pontos/>
     <table>
@@ -13,9 +14,9 @@
         @forelse($pontos as $ponto)
             <tr>
                 <td class="text-center p-2">{{ $ponto->turnos->hora_entrada }} - {{$ponto->turnos->hora_saida}}</td>
-                <td class="text-center p-2">{{ \Carbon\Carbon::parse($ponto->data_hora_entrada)->format('d/m/Y') }}</td>
-                <td class="text-center p-2">{{ \Carbon\Carbon::parse($ponto->data_hora_entrada)->format('H:i') }}</td>
-                <td class="text-center p-2">{{ \Carbon\Carbon::parse($ponto->data_hora_saida)->format('H:i') }}</td>
+                <td class="text-center p-2">{{ Carbon::parse($ponto->data_hora_entrada)->format('d/m/Y') }}</td>
+                <td class="text-center p-2">{{ Carbon::parse($ponto->data_hora_entrada)->format('H:i') }}</td>
+                <td class="text-center p-2">{{ $ponto->data_hora_saida ? Carbon::parse($ponto->data_hora_saida)->format('H:i') : "Sem hora saída" }}</td>
             </tr>
         @empty
             <tr>

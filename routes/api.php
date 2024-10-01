@@ -17,7 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::middleware(AdminMiddleware::class)->group(function () {
         Route::prefix('/users')->group(function () {
-            Route::put('/{user}', [UserController::class, 'update']);
+            Route::patch('/{user}', [UserController::class, 'update']);
             Route::get('/', [UserController::class, 'index']);
             Route::post('/', [UserController::class, 'store']);
             Route::delete('/{user}', [UserController::class, 'destroy']);
@@ -38,11 +38,10 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::patch('/', [TurnosController::class, 'update']);
         });
     });
-
+    Route::prefix('/users')->group(function () {
+        Route::put('/{user}', [UserController::class, 'update']);
+    });
     Route::middleware(UserMiddleware::class)->group(function () {
-        Route::prefix('/users')->group(function () {
-            Route::put('/{user}', [UserController::class, 'update']);
-        });
         Route::prefix('/pontos')->group(function () {
             Route::post('/bater-ponto', [PontosController::class, 'store']);
         });

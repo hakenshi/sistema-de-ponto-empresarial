@@ -24,6 +24,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'id_cargo',
+        'id_curso',
         'nome',
         'email',
         'matricula',
