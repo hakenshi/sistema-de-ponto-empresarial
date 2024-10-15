@@ -11,5 +11,5 @@
     </main>
 @endsection
 @section('scripts')
-    <script src="{{asset($script)}}"></script>
+    <script type="module" src="{{asset($script)}}"></script>
 @endsection

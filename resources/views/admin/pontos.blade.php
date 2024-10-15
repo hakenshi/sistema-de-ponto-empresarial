@@ -1,3 +1,3 @@
-<x-admin-layout>
-    <h2>Pontos</h2>
+<x-admin-layout :script="asset('js/pontos.js')">
+    <livewire:pontos-table wire:key="pontos-table" />
 </x-admin-layout>

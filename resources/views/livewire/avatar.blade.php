@@ -71,7 +71,7 @@
                     </div>
                     <div class="dialog-input-container">
                         <label>Curso:</label>
-                        <span class="input">Banana</span>
+                        <span class="input">{{$user->curso->nome}}</span>
                     </div>
                     <div class="dialog-input-container">
                         <label>Matrícula/RA:</label>

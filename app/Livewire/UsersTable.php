@@ -3,19 +3,21 @@
 namespace App\Livewire;
 
 use App\Models\Cursos;
+use App\Models\Turnos;
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class UsersTable extends Component
 {
+    use WithPagination;
     public $user;
-    public $turnos;
-
     public function render()
     {
-        $users = User::paginate();
+        $users = User::paginate(9);
         $cursos = Cursos::all();
-        return view('livewire.users-table', compact('users', 'cursos'));
+        $turnos = Turnos::all();
+        return view('livewire.users-table', compact('users', 'cursos', 'turnos'));
     }
 
     public function loadUser($id)
@@ -27,17 +29,17 @@ class UsersTable extends Component
         }
     }
 
-    public function setTurnos($id)
-    {
-        $this->turnos = User::findOrFail($id)->turnos;
-    }
-
     public function updateStatus($id)
     {
         $user = User::findOrFail($id);
         $user->status = $user->status == 1 ? 0 : 1;
         $user->save();
+        return back();
+    }
 
+    public function destroy(User $id)
+    {
+        $id->delete();
         return back();
     }
 

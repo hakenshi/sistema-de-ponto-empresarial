@@ -17,15 +17,19 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::middleware('auth')->group(function () {
 
     Route::middleware(AdminMiddleware::class)->group(function () {
+
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         })->name('dashboard');
+
         Route::get('/usuarios', function () {
             return view('admin.usuarios');
         })->name('usuarios');
+
         Route::get('/pontos', function () {
             return view('admin.pontos');
         })->name('pontos');
+
         Route::get('/turnos', function () {
             return view('admin.turnos');
         })->name('turnos');

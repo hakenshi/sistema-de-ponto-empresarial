@@ -24,9 +24,9 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::prefix('pontos')->group(function () {
-            Route::delete('/', [PontosController::class, 'store']);
-            Route::patch('/', [PontosController::class, 'update']);
-            Route::get('/', [PontosController::class, 'index']);
+            Route::post('/', [PontosController::class, 'storeAdmin'])->name('api.pontos.store');
+            Route::patch('/{pontos}', [PontosController::class, 'update'])->name('api.pontos.update');
+            Route::delete('/{pontos}', [PontosController::class, 'destroy'])->name('api.pontos.destroy');
         });
 
         Route::prefix('turnos')->group(function () {

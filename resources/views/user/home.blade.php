@@ -17,9 +17,10 @@
             </p>
             <div class="turno-container">
                 @if($proximoTurno)
-                    {{$proximoTurno['message']}}
-                @else
+                    Turno Atual:
                     {{$proximoTurno['hora_entrada']}} - {{ $proximoTurno['hora_saida']}}
+                @else
+                    {{$proximoTurno['message']}}
                 @endif
             </div>
             @endif

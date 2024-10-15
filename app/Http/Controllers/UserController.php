@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUsersRequest;
-use App\Http\Requests\UpdateUsuariosRequest;
+//use App\Http\Requests\StoreUsersRequest;
+//use App\Http\Requests\UpdateUsuariosRequest;
 use App\Http\Requests\UsuariosRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Turnos;
 use App\Models\User;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 class UserController extends Controller
 {
@@ -27,23 +30,21 @@ class UserController extends Controller
      */
     public function store(UsuariosRequest $request)
     {
-
         $data = $request->validated();
 
         $data['password'] = Hash::make($data['password']);
-
         $data['id_curso'] = intval($data['curso']);
-
-        if ($data['id_curso']) {
-            unset($data['curso']);
-        }
+        $data['id_turno'] = intval($data['turno']);
 
         $data['id_cargo'] = 2;
 
-        User::create($data);
+        $user = User::create($data);
 
-        return back();
+        $user->turnos()->attach($data['id_turno']);
+
+        return redirect()->back();
     }
+
 
     /**
      * Display the specified resource.
@@ -58,31 +59,30 @@ class UserController extends Controller
      */
     public function update(UsuariosRequest $request, User $user)
     {
-
         $data = $request->validated();
+        $data['id_turno'] = $data['turno'] ? intval($data['turno']) : null;
 
-        dd($data);
+        $data['id_curso'] = intval($data['curso']);
 
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($request->password);
-        } else {
-            $data['password'] = $user->password;
-        }
+        unset($data['curso'], $data['turno']);
+
+        $user->turnos()->detach();
+        $user->turnos()->attach($data['id_turno']);
+
+        $data['password'] = isset($data['password']) ? Hash::make($request->password) : $user->password;
 
         if ($request->hasFile('foto_perfil') && $request->file('foto_perfil')->isValid()) {
             if (!(is_null($user->foto_perfil))) {
                 Storage::disk('public')->delete($user->foto_perfil);
             }
             $data['foto_perfil'] = $request->file('foto_perfil')->store('images', 'public');
+        } else {
+            $data['foto_perfil'] = $user->foto_perfil;
         }
-
-        $user->foto_perfil = $data['foto_perfil'];
-        $user->password = $data['password'];
-
-        $user->save();
-
-        return back()->with('success', 'Dados atualizados com sucesso!');
+        $user->update($data);
+        return new UserResource($user);
     }
+
 
     /**
      * Remove the specified resource from storage.

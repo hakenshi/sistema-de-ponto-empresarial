@@ -20,7 +20,6 @@
     i {
         color: var(--unifae-green-3);
     }
-
     input {
         width: 100%;
         border: none;
@@ -52,12 +51,12 @@ aside {
 }
 
 .button-primary {
-    background: var(--unifae-green-4);
+    background: var(--unifae-green-1);
     color: white;
     transition: all .2s ease-in-out;
 
     &:hover {
-        background: var(--unifae-green-1);
+        background: var(--unifae-green-2);
     }
 
     &:disabled {

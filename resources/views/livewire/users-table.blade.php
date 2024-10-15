@@ -1,61 +1,17 @@
 @php use Carbon\Carbon; @endphp
 <div class="table-container"
-     x-data="{
-    previewImage: null,
-    userId: null,
-    matricula: null,
-    curso: null,
-    openUserModal(){
-       this.$refs.addUserRef.showModal()
-    },
-    editUserModal(id){
-        this.userId = id;
-        this.$wire.call('loadUser', id).then(() => {
-        this.$refs.editUserRef.showModal()
-        })
-    },
-    updateStatus(id, status){
-        if (confirm(`Tem certeza de que deseja ${status == 1 ? 'inativar': 'ativar'} esse usuário?`)){
-           this.$wire.call('updateStatus', id)
-        }
-    },
-    closeEditModal(){
-        this.userId = null;
-        this.$wire.call('loadUser', null)
-        this.$refs.editUserRef.close();
-    },
-    closeUserModal(){
-       this.$refs.addUserRef.close()
-    },
-    openFileInput(){
-        this.$refs.fotoPerfilRef.click()
-    },
-    setPreviewImage(e){
-        const file = e.target.files[0]
-
-        if(file){
-        console.log(file)
-          const reader = new FileReader()
-          reader.onload = e => {
-            this.previewImage = e.target.result
-          }
-          reader.readAsDataURL(file)
-        }
-    }
-}"
+     x-data="userModalData()"
 >
     <div class="actions-container">
-
         @if($user)
-            <dialog x-ref="editUserRef" @close="closeEditModal()">
-                <div class="dialog-container">
+            <dialog x-ref="editUserRef">
+                <div class="dialog-container" @close="closeEditModal()">
                     <div class="dialog-header">
                         <button class="button-icon" @click="closeEditModal()"><i class="fa-solid fa-x"></i></button>
                     </div>
                     <div class="dialog-body">
-                        <form  action="{{"api/users/".$user->id}}" class="dialog-form" method="post">
-                            @method("PATCH")
-                            @csrf
+                        <form x-ref="editForm" @submit.prevent="handleUpdateSubmit" action="{{"api/users/".$user->id}}"
+                              class="dialog-form" method="post">
                             <div class="dialog-input-container">
                                 <label for="nome">Nome:</label>
                                 <input value="{{$user?->nome}}" class="input" type="text" name="nome" id="nome">
@@ -63,8 +19,7 @@
 
                             <div class="dialog-input-container">
                                 <label for="email">Email:</label>
-                                <input value="{{$user?->email}}" class="input" type="email" name="email" id="email"
-                                >
+                                <input value="{{$user?->email}}" class="input" type="email" name="email" id="email">
                             </div>
 
                             <div class="dialog-input-container">
@@ -74,13 +29,34 @@
                                     @foreach($cursos as $curso)
                                         @if($curso->id == $user->id_curso)
                                             <option value="{{$curso->id}}" selected>{{$curso['nome']}}</option>
-
                                         @else
                                             <option value="{{$curso->id}}">{{$curso['nome']}}</option>
                                         @endif
                                     @endforeach
                                 </select>
                             </div>
+
+                            @if($turnos->count() > 0)
+                                <div class="dialog-input-container">
+                                    <label for="turno">Turno:</label>
+                                    <select class="input" name="turno" id="turno">
+                                        <option value="">Selecione um turno</option>
+                                        @foreach($turnos as $turno)
+                                            @php
+                                                $userTurno = $user->turnos->where('id', $turno->id)->first();
+                                            @endphp
+                                            @if($userTurno && $userTurno->id == $turno->id)
+                                                <option value="{{$turno->id}}" selected>{{$turno->hora_entrada}}
+                                                    - {{$turno->hora_saida}}</option>
+                                            @else
+                                                <option value="{{$turno->id}}">{{$turno->hora_entrada}}
+                                                    - {{$turno->hora_saida}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+
 
                             <div class="dialog-input-container">
                                 <label for="matricula">Matrícula/RA:</label>
@@ -108,14 +84,14 @@
                 </div>
             </dialog>
         @endif
-
         <dialog x-ref="addUserRef" @close="closeUserModal()">
             <div class="dialog-container">
                 <div class="dialog-header">
                     <button class="button-icon" @click="closeUserModal()"><i class="fa-solid fa-x"></i></button>
                 </div>
                 <div class="dialog-body">
-                    <form action="/api/users" class="dialog-form" method="post" enctype="multipart/form-data">
+                    <form x-ref="storeForm" @submit.prevent="handleStoreSubmit" action="/api/users" class="dialog-form"
+                          enctype="multipart/form-data">
                         @csrf
                         <div class="dialog-input-container">
                             <label for="nome">Nome:</label>
@@ -136,6 +112,19 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        @if($turnos->count() > 0)
+                            <div class="dialog-input-container">
+                                <label for="turno">Turno:</label>
+                                <select class="input" name="turno" id="turno">
+                                    <option value="">Selecione um turno</option>
+                                    @foreach($turnos as $turno)
+                                        <option value="{{$turno->id}}">{{$turno->hora_entrada}}
+                                            - {{$turno->hora_saida}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
 
                         <div class="dialog-input-container">
                             <label for="matricula">Matrícula/RA:</label>
@@ -161,7 +150,6 @@
                 </div>
             </div>
         </dialog>
-
         <button @click="openUserModal()" class="button-primary">Cadastrar Usuário</button>
     </div>
     <table>
@@ -170,8 +158,10 @@
             <th class="text-center">Foto de perfil</th>
             <th class="text-center">Nome</th>
             <th class="text-center">Email</th>
+            <th class="text-center">Curso</th>
             <th class="text-center">RA</th>
             <th class="text-center">Status</th>
+            <th class="text-center">Turno</th>
             <th class="text-center">Data de adição</th>
             <th class="text-center"></th>
         </tr>
@@ -186,15 +176,23 @@
                 </td>
                 <td class="text-center p-2">{{$user->nome}}</td>
                 <td class="text-center p-2">{{$user->email}}</td>
+                <td class="text-center p-2">{{$user->curso->nome}}</td>
                 <td class="text-center p-2">{{$user->matricula}}</td>
                 <td class="text-center p-2">{{$user->status == 1 ? "Ativo" : "Inativo"}}</td>
+                <td class="text-center p-2">
+                    @forelse($user->turnos as $turno)
+                        {{$turno['hora_entrada']}} - {{$turno['hora_saida']}}
+                    @empty
+                        Sem turno
+                    @endforelse
+                </td>
+
                 <td class="text-center p-2">{{Carbon::parse($user->created_at)->format('d/m/Y, H:i')}}</td>
                 <td class="text-center p-2">
                     <div class="d-flex justify-content-center gap-3">
-                        <button>Turnos</button>
                         <button @click="editUserModal({{$user->id}})" class="button-edit">Editar</button>
-                        <button @click="updateStatus({{$user->id}}, {{$user->status}})"
-                                class="{{$user->status == 1 ? "button-delete" : "button-confirm"}}">{{$user->status == 1 ? "Inativar" : "Ativar"}}</button>
+                        <button @click="updateStatus({{$user->id}}, {{$user->status}})" class="{{$user->status == 1 ? "button-delete" : "button-confirm"}}">{{$user->status == 1 ? "Inativar" : "Ativar"}}</button>
+                        <button @click="deleteUser({{$user->id}})" class="button-delete"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </td>
             </tr>

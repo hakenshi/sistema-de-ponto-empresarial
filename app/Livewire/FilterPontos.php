@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Turnos;
 use Livewire\Component;
 
 class FilterPontos extends Component
@@ -11,7 +12,7 @@ class FilterPontos extends Component
     public $periodo;
 
     public function mount(){
-        $this->turnos = auth()->user()->turnos;
+        $this->turnos = auth()->user()->id_cargo === 1 ? Turnos::all() : auth()->user()->turnos;
     }
 
     public function render()

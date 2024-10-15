@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -25,6 +26,7 @@ class User extends Authenticatable
     protected $fillable = [
         'id_cargo',
         'id_curso',
+        'foto_perfil',
         'nome',
         'email',
         'matricula',
@@ -66,6 +68,11 @@ class User extends Authenticatable
     public function turnos(): BelongsToMany
     {
         return $this->belongsToMany(Turnos::class, 'turno_usuario', 'id_usuario', 'id_turno');
+    }
+
+    public function curso(): BelongsTo
+    {
+        return $this->belongsTo(Cursos::class, 'id_curso');
     }
 
 }

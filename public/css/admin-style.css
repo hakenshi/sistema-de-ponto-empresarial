@@ -157,6 +157,20 @@ main {
     gap: 20px;
 }
 
+.admin-actions-container{
+    grid-row: 1;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    select{
+        width: 11.25rem;
+    }
+}
+
 select{
     background-color: white !important;
     border-radius: 7px;
@@ -165,7 +179,9 @@ select{
 }
 
 .pagination-container{
+    width: 100%;
     display: flex;
+    justify-content: center;
     gap: 10px;
     grid-row: 3;
 }

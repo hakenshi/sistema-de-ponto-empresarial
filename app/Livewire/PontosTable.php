@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use App\Http\Resources\PontoResource;
+use App\Models\Pontos;
+use App\Models\Turnos;
+use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -12,26 +15,34 @@ class PontosTable extends Component
 {
     use WithPagination, WithoutUrlPagination;
 
-    protected $paginationTheme = 'bootstrap';
     public $turnos;
     public $user;
+    public $users;
     public $id_turno;
     public $periodo;
+    public $editPonto;
     protected $listeners = ['filterPontos'];
 
 
     public function mount()
     {
         $this->user = auth()->user();
-        $this->turnos = $this->user->turnos;
+        if ($this->user->id_cargo == 2) {
+            $this->turnos = $this->user->turnos;
+        }
+        $this->turnos = Turnos::all();
         $this->id_turno = null;
         $this->periodo = null;
     }
 
     public function render()
     {
-        $query = $this->user->pontos();
 
+        if ($this->user->id_cargo === 2) {
+            $query = $this->user->pontos();
+        } else {
+            $query = Pontos::query()->with('usuario');
+        }
         if ($this->id_turno) {
             $query->where('id_turno', $this->id_turno);
         }
@@ -40,10 +51,6 @@ class PontosTable extends Component
             $this->dateFilter($query);
         }
 
-//        if ($this->periodo && $this->id_turno) {
-//            dd($query->toSql());
-//        }
-
         $pontos = PontoResource::collection($query->paginate());
 
         return view('livewire.pontos-table', [
@@ -51,6 +58,7 @@ class PontosTable extends Component
             'turnos' => $this->turnos
         ]);
     }
+
     private function dateFilter($query)
     {
         $now = Carbon::now();
@@ -90,7 +98,6 @@ class PontosTable extends Component
         }
     }
 
-
     public function filterPontos($id_turno, $periodo)
     {
         if ($id_turno) {
@@ -104,6 +111,25 @@ class PontosTable extends Component
         } else {
             $this->periodo = null;
         }
+    }
+
+    public function loadPonto($id)
+    {
+        if ($id) {
+            $this->editPonto = Pontos::findOrFail($id);
+            $this->users = User::all();
+        } else {
+            $this->editPonto = null;
+            $this->users = null;
+        }
+    }
+
+    public function deletePonto($id)
+    {
+        Pontos::findOrFail($id)->delete();
+        $this->resetPage();
+        $this->render();
+        $this->dispatch('$refresh');
     }
 
 }

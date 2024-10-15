@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PontoRequest;
 use App\Http\Resources\PontoResource;
 use App\Models\Pontos;
+use App\Models\Turnos;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class PontosController extends Controller
 {
@@ -21,6 +22,40 @@ class PontosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    public function storeAdmin(Request $request)
+    {
+        $data = $request->validate([
+            'usuario' => 'required|exists:users,id',
+            'turno' => 'required|exists:turnos,id',
+            'data' => 'required',
+        ]);
+        $turno = Turnos::findOrFail($data['turno']);
+
+        $dataHoraEntrada = Carbon::createFromFormat('d/m/Y H:i:s', "{$data['data']} $turno->hora_entrada")->format('Y-m-d H:i:s');
+        $dataHoraSaida = Carbon::createFromFormat('d/m/Y H:i:s', "{$data['data']} $turno->hora_saida")->format('Y-m-d H:i:s');
+
+
+        $pontoExistente = Pontos::where('id_usuario', $data['usuario'])
+            ->where('id_turno', $data['turno'])
+            ->whereDate('data_hora_entrada', Carbon::createFromFormat('d/m/Y', $data['data'])->format('Y-m-d'))
+            ->exists();
+
+        if ($pontoExistente) {
+            throw ValidationException::withMessages([
+                'usuario' => 'Esse usuário já tem um ponto registrado para esta data.'
+            ]);
+        }
+
+        Pontos::create([
+            'id_usuario' => $data['usuario'],
+            'id_turno' => $data['turno'],
+            'data_hora_entrada' => $dataHoraEntrada,
+            'data_hora_saida' => $dataHoraSaida,
+        ]);
+        return back();
+    }
+
     public function store(Request $request)
     {
         try {
@@ -56,6 +91,15 @@ class PontosController extends Controller
                 return response()->json([
                     'message' => 'Turno completado, até o próximo turno!'
                 ]);
+            }
+
+            if (!$pontoEntrada && Carbon::now()->greaterThan(Carbon::parse($turnoAtual->hora_entrada))) {
+                $ponto = Pontos::create([
+                    'id_usuario' => $user->id,
+                    'id_turno' => $turnoAtual->id,
+                    'data_hora_entrada' => now(),
+                ]);
+                return new PontoResource($ponto);
             }
 
             if ($pontoEntrada) {

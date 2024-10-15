@@ -19,6 +19,9 @@ class AdminMiddleware
         if ($request->user()->id_cargo == 1){
             return $next($request);
         }
-        abort(403);
+        else{
+            $request->session()->flush();
+            return to_route("login");
+        }
     }
 }
