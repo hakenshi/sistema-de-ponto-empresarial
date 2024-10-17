@@ -134,10 +134,19 @@ class PontosController extends Controller
      */
     public function update(Request $request, Pontos $pontos)
     {
-        $data = $request->all();
-
+        $data = $request->validate([
+            'usuario' => 'required|exists:users,id',
+            'turno' => 'required|exists:turnos,id',
+            'data' => 'required',
+            "hora-entrada" => "required",
+            "hora-saida" => "required",
+        ]);
+        $data['data_hora_entrada'] = Carbon::createFromFormat('d/m/Y H:i:s', "{$data['data']} {$data['hora-entrada']}")->format('Y-m-d H:i:s');
+        $data['data_hora_saida'] = Carbon::createFromFormat('d/m/Y H:i:s', "{$data['data']} {$data['hora-saida']}")->format('Y-m-d H:i:s');
+        $data['id_usuario'] = $data['usuario'];
+        $data['id_turno'] = $data['turno'];
+        unset($data['usuario'], $data['turno'], $data['data'], $data['hora-entrada'], $data['hora-saida']);
         $pontos->update($data);
-
         return new PontoResource($pontos);
     }
 

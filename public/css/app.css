@@ -43,6 +43,17 @@ button {
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: bold;
+
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        background-color:initial;
+    }
+
+    &:disabled {
+        background-color: initial;
+    }
+
 }
 
 aside {
@@ -79,7 +90,7 @@ aside {
 }
 
 .button-delete {
-    background-color: rgb(220 38 38);
+    background-color: rgb(246, 58, 58);
     color: white;
     transition: all .2s ease-in-out;
 

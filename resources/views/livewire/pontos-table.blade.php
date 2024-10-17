@@ -1,7 +1,6 @@
 @php use Carbon\Carbon; @endphp
 <div class="table-container" x-data="pontos()">
     <livewire:filter-pontos/>
-
     <dialog x-ref="editPontoRef" @close="closeModal()">
         @if($editPonto)
             {{--        @dd($this->users)--}}
@@ -10,7 +9,7 @@
                     <button class="button-icon" @click="closeModal()"><i class="fa-solid fa-x"></i></button>
                 </div>
                 <div class="dialog-body">
-                    <form action="{{route('api.pontos.update', $editPonto->id)}}" class="dialog-form" method="post">
+                    <form x-ref="updatePonto" @submit.prevent="handleUpdate" action="{{route('api.pontos.update', $editPonto->id)}}" class="dialog-form" method="post">
                         <div class="dialog-input-container">
                             <label for="usuario">Usuário:</label>
                             <select class="input w-100" name="usuario" id="usuario">
@@ -25,23 +24,31 @@
                             </select>
                         </div>
                         <div class="dialog-input-container">
-                            <label for="hora-saida">Turno</label>
-                            <select name="hora-saida" id="hora-saida" class="input w-100">
-                                <option value="">Selecione o turno do usuário</option>
-                                @php
-                                    $editUser = \App\Models\User::findOrFail($editPonto->id_usuario);
-                                    $turnoIds = $editUser->turnos()->pluck('turnos.id')->toArray();
-                                @endphp
-                                @foreach($turnos as $turno)
-                                    <option value="{{$turno->id}}"
-                                            @if(in_array($turno->id, $turnoIds)) selected @endif>{{$turno->hora_entrada}}
-                                        - {{$turno->hora_saida}}</option>
-                                @endforeach
-                            </select>
+                                <label for="turno">Turno</label>
+                                <select name="turno" id="turno" class="input w-100">
+                                    <option value="">Selecione o turno do usuário</option>
+                                    @php
+                                        $editUser = \App\Models\User::findOrFail($editPonto->id_usuario);
+                                        $turnoIds = $editUser->turnos()->pluck('turnos.id')->toArray();
+                                    @endphp
+                                    @foreach($turnos as $turno)
+                                        <option value="{{$turno->id}}"
+                                                @if(in_array($turno->id, $turnoIds)) selected @endif>{{$turno->hora_entrada}}
+                                            - {{$turno->hora_saida}}</option>
+                                    @endforeach
+                                </select>
                         </div>
                         <div class="dialog-input-container">
-                            <label for="usuario">Usuário:</label>
-                            <input class="input" type="text" x-mask="99/99/9999" value="'{{Carbon::createFromFormat('Y-m-d H:i:s', $editPonto->data_hora_entrada)->format('d/m/Y')}}'">
+                            <label for="hora-entrada">Horário de entrada:</label>
+                            <input class="input" name="hora-entrada" id="hora-entrada" type="text" x-mask="99:99:99" value="'{{Carbon::createFromFormat('Y-m-d H:i:s', $editPonto->data_hora_entrada)->format('H:i:s')}}'">
+                        </div>
+                        <div class="dialog-input-container">
+                            <label for="hora-saida">Horário de Saída:</label>
+                            <input class="input" name="hora-saida" id="hora-saida" type="text" x-mask="99:99:99" value="'{{$editPonto->data_hora_saida ? Carbon::createFromFormat('Y-m-d H:i:s', $editPonto->data_hora_saida)->format('H:i:s') : ""}}'">
+                        </div>
+                        <div class="dialog-input-container">
+                            <label for="data">Data:</label>
+                            <input class="input" id="data" name="data" type="text" x-mask="99/99/9999" value="'{{Carbon::createFromFormat('Y-m-d H:i:s', $editPonto->data_hora_entrada)->format('d/m/Y')}}'">
                         </div>
                         <div class="d-flex justify-content-center p-2 w-100">
                             <button class="button-primary" type="submit">

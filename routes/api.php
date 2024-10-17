@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\PontosController;
 use App\Http\Controllers\TurnosController;
 use App\Http\Controllers\TurnosUsuariosController;
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('pontos')->group(function () {
             Route::post('/', [PontosController::class, 'storeAdmin'])->name('api.pontos.store');
+            Route::post('/export-excel', [ExportController::class, 'exportPontos'])->name('api.pontos.export.excel');
             Route::patch('/{pontos}', [PontosController::class, 'update'])->name('api.pontos.update');
             Route::delete('/{pontos}', [PontosController::class, 'destroy'])->name('api.pontos.destroy');
         });

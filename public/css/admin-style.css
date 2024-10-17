@@ -129,26 +129,29 @@ main {
     width: 100%;
     /*border-collapse: collapse;*/
 
-    tbody{
+    tbody {
         /*display: table-cell;*/
-        tr{
+
+        tr {
             border-top: 1px solid rgba(0, 0, 0, 0.25) !important;
         }
-        tr:first-child{
+
+        tr:first-child {
             border-top: none;
         }
-        td{
+
+        td {
             padding: 10px !important;
         }
 
     }
 }
 
-.table-dark{
+.table-dark {
     background-color: var(--unifae-green-1) !important;
 }
 
-.actions-container{
+.actions-container {
     grid-row: 1;
     width: 100%;
     padding: 10px;
@@ -157,7 +160,7 @@ main {
     gap: 20px;
 }
 
-.admin-actions-container{
+.admin-actions-container {
     grid-row: 1;
     width: 100%;
     padding: 10px;
@@ -166,19 +169,20 @@ main {
     align-items: center;
     justify-content: center;
     gap: 20px;
-    select{
+
+    select {
         width: 11.25rem;
     }
 }
 
-select{
+select {
     background-color: white !important;
     border-radius: 7px;
     padding: 5px;
     border: 1px solid var(--unifae-green-3);
 }
 
-.pagination-container{
+.pagination-container {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -186,7 +190,7 @@ select{
     grid-row: 3;
 }
 
-.button-icon,.button-paginate,.button-paginate-disabled{
+.button-icon, .button-paginate, .button-paginate-disabled {
     color: white;
     display: flex;
     justify-content: center;
@@ -196,31 +200,32 @@ select{
     border-radius: 100% !important;
 }
 
-.button-paginate-disabled{
+.button-paginate-disabled {
     background: var(--unifae-gray-1);
 }
 
-.button-paginate{
+.button-paginate {
     background: var(--unifae-green-1);
 }
-.button-icon{
+
+.button-icon {
     background: #f63a3a;
 }
 
-.button-icon:hover{
+.button-icon:hover {
     background: red;
 }
 
-.dropdown{
+.dropdown {
     position: relative;
 }
 
-.dropdown-content > button{
+.dropdown-content > button {
     background: none;
     color: white;
 }
 
-.dropdown-content{
+.dropdown-content {
     position: absolute;
     background: var(--unifae-gray-2);
     right: 0;
@@ -228,20 +233,20 @@ select{
     border-radius: 5px;
 }
 
-.dialog-container{
+.dialog-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-.dialog-header{
+.dialog-header {
     width: 100%;
     display: flex;
     justify-content: flex-end;
 }
 
-.dialog-body{
+.dialog-body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -249,19 +254,19 @@ select{
     width: 100% !important;
 }
 
-.dialog-form{
+.dialog-form {
     display: grid;
     gap: .5em;
     width: 100% !important;
 }
 
-.image-container{
+.image-container {
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.avatar{
+.avatar {
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -269,7 +274,7 @@ select{
     cursor: pointer;
 }
 
-.avatar-lg{
+.avatar-lg {
     border-radius: 50%;
     width: 200px;
     height: 200px;
@@ -279,6 +284,14 @@ select{
     cursor: pointer;
 }
 
+.button-excel {
+    color: white;
+    background: #21A366;
+}
+.button-excel:hover {
+    color: white;
+    background: #107c41;
+}
 
 @media screen and (max-width: 768px) {
 
@@ -292,9 +305,11 @@ select{
         gap: 0;
         padding: 0;
     }
-    .actions-container{
+
+    .actions-container {
         gap: 5px;
     }
+
     aside, main, header {
         border-radius: 0;
     }
@@ -307,7 +322,7 @@ select{
         display: none;
     }
 
-    .items-container{
+    .items-container {
         height: auto;
     }
 

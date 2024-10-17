@@ -1,6 +1,6 @@
 <div class="{{ auth()->user()->id_cargo === 2 ? 'actions-container' : 'admin-actions-container' }}">
     @if(auth()->user()->id_cargo === 1)
-        <livewire:registrar-ponto />
+        <livewire:registrar-ponto/>
     @endif
     <div>
         <select wire:model="id_turno" wire:change="filter" name="turno" id="turno">
@@ -20,5 +20,5 @@
             <option value="semestre">Último semestre</option>
         </select>
     </div>
-
+    <livewire:excel/>
 </div>

@@ -19,7 +19,6 @@ class Avatar extends Component
     {
         return view('livewire.avatar');
     }
-
     public function logout(Request $request){
         if (Auth::check()) {
             Auth::logout();
